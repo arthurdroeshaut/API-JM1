@@ -1,22 +1,22 @@
+import random
+from passlib.hash import pbkdf2_sha256
 from fastapi import Depends, FastAPI, HTTPException
+from pydantic import ValidationError
 from sqlalchemy.orm import Session
-import os
-import crud
+from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
+import auth
 import models
+import crud
 import schemas
+from schemas import CharacterCreate, Character, MovieCreate, Movie, VehicleCreate, Vehicle
 from database import SessionLocal, engine
+import os
 
-test123test
-
-
-print("We are in the main.......")
 if not os.path.exists('.\sqlitedb'):
-    print("Making folder.......")
     os.makedirs('.\sqlitedb')
 
-print("Creating tables.......")
+# "sqlite:///./sqlitedb/sqlitedata.db"
 models.Base.metadata.create_all(bind=engine)
-print("Tables created.......")
 
 app = FastAPI()
 

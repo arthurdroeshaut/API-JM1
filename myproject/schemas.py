@@ -1,21 +1,5 @@
 from pydantic import BaseModel
-
-
-class ItemBase(BaseModel):
-    title: str
-    description: str | None = None
-
-
-class ItemCreate(ItemBase):
-    pass
-
-
-class Item(ItemBase):
-    id: int
-    owner_id: int
-
-    class Config:
-        orm_mode = True
+from models import User as UserBase, Koffie as KoffieBase, Thee as TheeBase
 
 
 class UserBase(BaseModel):
@@ -28,8 +12,40 @@ class UserCreate(UserBase):
 
 class User(UserBase):
     id: int
-    is_active: bool
-    items: list[Item] = []
+
+    class Config:
+        orm_mode = True
+
+class KoffieBase(BaseModel):
+    naam: str
+    beschrijving: str
+    koffiebonen: str
+
+
+class KoffieCreate(KoffieBase):
+    pass
+
+
+class Koffie(KoffieBase):
+    id: int
+    owner_id: int 
+
+    class Config:
+        orm_mode = True
+
+
+class TheeBase(BaseModel):
+    naam: str
+    beschrijving: str 
+
+
+class TheeCreate(TheeBase):
+    pass
+
+
+class Thee(TheeBase):
+    id: int
+    owner_id: int 
 
     class Config:
         orm_mode = True

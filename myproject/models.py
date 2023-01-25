@@ -5,22 +5,32 @@ from database import Base
 
 
 class User(Base):
-    __tablename__ = "users"
+    __tablename__ = "Users"
 
-    id = Column(Integer, primary_key=True, index=True)
-    email = Column(String, unique=True, index=True)
+    id = Column(Integer, primary_key=True)
+    email = Column(String)
     hashed_password = Column(String)
     is_active = Column(Boolean, default=True)
 
-    items = relationship("Item", back_populates="owner")
-
-
-class Item(Base):
-    __tablename__ = "items"
+class Koffie(Base):
+    __tablename__ = "Koffie"
 
     id = Column(Integer, primary_key=True, index=True)
-    title = Column(String, index=True)
-    description = Column(String, index=True)
-    owner_id = Column(Integer, ForeignKey("users.id"))
+    naam = Column(String, index=True)
+    beschrijving = Column(String, index=True)
+    koffiebonen = Column(String, index=True)
+    user_id = Column(Integer, ForeignKey("users.id"))
+    
+    owner = relationship("User", back_populates="Koffie")
 
-    owner = relationship("User", back_populates="items")
+
+class Thee(Base):
+    __tablename__= "Thee"
+    
+    id = Column(Integer, primary_key=True, index=True)
+    naam = Column(Integer, index=True)
+    beschrijving = Column(String, index=True)
+    aantal = ?
+    user_id = Column(Integer, ForeignKey("users.id"))
+    
+    owner = relationship("User", back_populates="Thee")
