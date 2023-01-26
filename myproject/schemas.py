@@ -1,5 +1,4 @@
 from pydantic import BaseModel
-from models import User as UserBase, Koffie as KoffieBase, Thee as TheeBase
 
 
 class UserBase(BaseModel):
@@ -16,6 +15,7 @@ class User(UserBase):
     class Config:
         orm_mode = True
 
+
 class KoffieBase(BaseModel):
     naam: str
     beschrijving: str
@@ -28,7 +28,7 @@ class KoffieCreate(KoffieBase):
 
 class Koffie(KoffieBase):
     id: int
-    owner_id: int 
+    owner_id: int
 
     class Config:
         orm_mode = True
@@ -36,7 +36,8 @@ class Koffie(KoffieBase):
 
 class TheeBase(BaseModel):
     naam: str
-    beschrijving: str 
+    beschrijving: str
+    water: str
 
 
 class TheeCreate(TheeBase):
@@ -45,7 +46,7 @@ class TheeCreate(TheeBase):
 
 class Thee(TheeBase):
     id: int
-    owner_id: int 
+    owner_id: int
 
     class Config:
         orm_mode = True
