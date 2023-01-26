@@ -19,7 +19,7 @@ class User(UserBase):
 class KoffieBase(BaseModel):
     naam: str
     beschrijving: str
-    koffiebonen: str
+    koffiebonen: int
 
 
 class KoffieCreate(KoffieBase):
@@ -37,7 +37,7 @@ class Koffie(KoffieBase):
 class TheeBase(BaseModel):
     naam: str
     beschrijving: str
-    water: str
+    water_niveau: int
 
 
 class TheeCreate(TheeBase):
@@ -50,3 +50,24 @@ class Thee(TheeBase):
 
     class Config:
         orm_mode = True
+
+
+class KoffieMachineBase(BaseModel):
+    naam: str
+    beschrijving: str
+    koffiebonen: int
+    melk_niveau: int
+    water_niveau: int
+
+
+class KoffieMachineCreate(KoffieMachineBase):
+    pass
+
+
+class KoffieMachine(KoffieMachineBase):
+    id: int
+    thee_id: int
+
+    class Config:
+        orm_mode = True
+

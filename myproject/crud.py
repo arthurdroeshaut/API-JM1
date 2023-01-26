@@ -62,6 +62,12 @@ def get_total_amount_of_thee_drank_by_user(db: Session, thee, user):
 def get_total_amount_of_coffee_drank_by_user(db: Session, koffie, user):
     return db.query(User.id).filter(user.id == koffie.naam).count()
 
+
+def get_level_of_milk(db: Session, melk_niveau):
+    return
+
+
+
 # 2 cruds om een koffie en thee aan te maken.
 
 
@@ -79,3 +85,4 @@ def create_thee(db: Session, thee: schemas.TheeCreate):
     db.commit()
     db.refresh(db_thee)
     return db_thee
+

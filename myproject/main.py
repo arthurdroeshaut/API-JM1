@@ -8,6 +8,7 @@ import auth
 import models
 import crud
 import schemas
+from schemas import KoffieCreate, Koffie, TheeCreate, Thee, UserCreate, User
 from database import SessionLocal, engine
 import os
 
@@ -40,7 +41,7 @@ def get_db():
         db.close()
 
 
-# api routes
+# api routes voor aanmaken accounts en tokens op te vragen.
 
 
 # token route
@@ -77,3 +78,34 @@ def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
 def read_users(skip: int = 0, limit: int = 100, db: Session = Depends(get_db), token: str = Depends(oauth2_scheme)):
     users = crud.get_user(db, skip=skip, limit=limit)
     return users
+
+# apis voor alle rest, koffies, thee, gebruikers,...
+# beginnende met de post endpoints.
+
+
+@app.post("/Users/CreateCoffee")
+def create_coffee(koffie: KoffieCreate, db: Session = Depends(get_db)):
+    db_koffie = models.Koffie(**koffie.dict())
+    db.add(db_koffie)
+    db.commit()
+    db.refresh(db_koffie)
+    return db_koffie
+
+
+@app.post("/Thee/CreateThee")
+def create_thee(thee: TheeCreate, db: Session = Depends(get_db)):
+    db_thee = models.Thee(**thee.dict())
+    db.add(db_thee)
+    db.commit()
+    db.refresh(db_thee)
+    return db_thee
+
+
+# nu komen alle get endpoints...
+
+@app.get("/Thee")
+def get_thee(thee: Thee, db: Session = Depends(get_db)):
+
+
+@app.get("/koffie")
+def get_koffie(koffie: Koffie, db: Session = Depends(get_db)):

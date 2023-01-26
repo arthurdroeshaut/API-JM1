@@ -14,14 +14,25 @@ class User(Base):
     is_active = Column(Boolean, default=True)
 
 
+class KoffieMachine(Base):
+    __tablename__ = "KoffieMachine"
+
+    id = Column(Integer, primary_key=True, index=True)
+    naam = Column(String, index=True)
+    beschrijving = Column(String, index=True)
+    melk_niveau = Column(Integer, index=True)
+    koffiebonen_niveau = Column(Integer, index=True)
+    water_niveau = Column(Integer, Index=True)
+    thee_id = Column(Integer, ForeignKey("thee.id"))
+
+
 class Koffie(Base):
     __tablename__ = "Koffie"
 
     id = Column(Integer, primary_key=True, index=True)
     naam = Column(String, index=True)
     beschrijving = Column(String, index=True)
-    koffiebonen = Column(String, index=True)
-    #   aantal = ?
+    koffiebonen = Column(Integer, index=True)
     user_id = Column(Integer, ForeignKey("users.id"))
 
     owner = relationship("User", back_populates="Koffie")
@@ -33,11 +44,15 @@ class Thee(Base):
     id = Column(Integer, primary_key=True, index=True)
     naam = Column(Integer, index=True)
     beschrijving = Column(String, index=True)
-    water = Column(String, index=True)
-    #   aantal = ?
+    water_niveau = Column(Integer, index=True)
     user_id = Column(Integer, ForeignKey("users.id"))
+    KoffieMachine_id = Column(Integer, ForeignKey("KoffieMachine.id"))
 
     owner = relationship("User", back_populates="Thee")
+
+
+class KoffieMachineCreate(KoffieMachine):
+    pass
 
 
 class KoffieCreate(Koffie):
