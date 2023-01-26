@@ -32,7 +32,7 @@ class Koffie(Base):
     id = Column(Integer, primary_key=True, index=True)
     naam = Column(String, index=True)
     beschrijving = Column(String, index=True)
-    koffiebonen = Column(Integer, index=True)
+    koffiebonen = Column(String, index=True)
     user_id = Column(Integer, ForeignKey("users.id"))
 
     owner = relationship("User", back_populates="Koffie")

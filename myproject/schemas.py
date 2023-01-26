@@ -19,7 +19,7 @@ class User(UserBase):
 class KoffieBase(BaseModel):
     naam: str
     beschrijving: str
-    koffiebonen: int
+    koffiebonen: str
 
 
 class KoffieCreate(KoffieBase):

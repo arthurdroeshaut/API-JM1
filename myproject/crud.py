@@ -66,7 +66,7 @@ def get_total_amount_of_coffee_drank_by_user(db: Session, koffie, user):
 def get_level_of_milk(db: Session, melk_niveau):
     return db.query(KoffieMachine.id).filter(KoffieMachine.id == KoffieMachine.melk_niveau).count()
 
-
+def get_level_inside_koffeemachine(db: Session, )
 
 # 2 cruds om een koffie en thee aan te maken.
 
@@ -85,4 +85,3 @@ def create_thee(db: Session, thee: schemas.TheeCreate):
     db.commit()
     db.refresh(db_thee)
     return db_thee
-

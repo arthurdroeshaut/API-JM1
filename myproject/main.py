@@ -103,9 +103,15 @@ def create_thee(thee: TheeCreate, db: Session = Depends(get_db)):
 
 # nu komen alle get endpoints...
 
-@app.get("/Thee")
-def get_thee(thee: Thee, db: Session = Depends(get_db)):
+#@app.get("/Thee")
+#def get_thee(thee: Thee, db: Session = Depends(get_db)):
 
 
-@app.get("/koffie")
-def get_koffie(koffie: Koffie, db: Session = Depends(get_db)):
+#@app.get("/koffie")
+#def get_koffie(koffie: Koffie, db: Session = Depends(get_db)):
+
+
+#@app.get("/koffieMachine/niveaus")
+#def get_koffiemachineniveau(koffiemachine: melk_niveau, koffiebonen_niveau, melk_niveau, db: Session(get_db)):
+
+
