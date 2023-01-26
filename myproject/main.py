@@ -109,8 +109,46 @@ def create_tea(tea: schemas.TeaCreate, db: Session = Depends(get_db)):
 
 # nu komen alle get endpoints...
 
-@app.post("/koffie")
-def make_coffee(coffee_name, beans):
-    c.execute("INSERT INTO Koffie (naam, koffiebonen) VALUES (?, ?, ?)", (coffee_name, beans))
-    conn.commit()
-    print("Koffie gemaakt!")
+
+@app.get("/coffee-machine/{coffee_machine_id}")
+def read_coffee_machine(coffee_machine_id: int, db: Session = Depends(get_db)):
+    return crud.get_coffee_machine(db, coffee_machine_id)
+
+
+@app.get("/coffee/{coffee_id}")
+def read_coffee(coffee_id: int, db: Session = Depends(get_db)):
+    return crud.get_coffee(db, coffee_id)
+
+
+@app.get("/coffee-beans/{coffee_beans_id}")
+def read_coffee_beans(coffee_beans_id: int, db: Session = Depends(get_db)):
+    return crud.get_coffee_beans(db, coffee_beans_id)
+
+
+@app.get("/tea/{tea_id}")
+def read_tea(tea_id: int, db: Session = Depends(get_db)):
+    return crud.get_tea(db, tea_id)
+
+
+@app.get("/coffee-machines/")
+def read_coffee_machines(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
+    return crud.get_coffee_machines(db, skip=skip, limit=limit)
+
+
+@app.get("/coffees/")
+def read_coffees(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
+    return crud.get_coffees(db, skip=skip, limit=limit)
+
+
+@app.get("/coffee-beans/")
+def read_coffee_beans(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
+    return crud.get_coffee_beans(db, skip=skip, limit=limit)
+
+
+@app.get("/teas/")
+def read_teas(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
+    return crud.get_teas(db, skip=skip, limit=limit)
+
+@app.get("/coffee/date/{date}")
+def read_coffee_by_date(date: str, db: Session = Depends(get_db)):
+    return crud.get_coffee_by_date(db, date)
