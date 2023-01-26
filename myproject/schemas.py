@@ -55,7 +55,7 @@ class Thee(TheeBase):
 class KoffieMachineBase(BaseModel):
     naam: str
     beschrijving: str
-    koffiebonen: int
+    koffiebonen_niveau: int
     melk_niveau: int
     water_niveau: int
 

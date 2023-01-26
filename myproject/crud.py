@@ -1,5 +1,5 @@
 from sqlalchemy.orm import Session
-from models import Koffie, User, Thee
+from models import Koffie, User, Thee, KoffieMachine
 import models
 import schemas
 import auth
@@ -64,7 +64,7 @@ def get_total_amount_of_coffee_drank_by_user(db: Session, koffie, user):
 
 
 def get_level_of_milk(db: Session, melk_niveau):
-    return
+    return db.query(KoffieMachine.id).filter(KoffieMachine.id == KoffieMachine.melk_niveau).count()
 
 
 
