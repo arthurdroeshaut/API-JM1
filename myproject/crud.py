@@ -1,6 +1,5 @@
-from pip._internal.network import auth
 from sqlalchemy.orm import Session
-from models import Koffie, User, Thee, KoffieCreate, TheeCreate, UserCreate
+from models import Koffie, User, Thee
 import models
 import schemas
 import auth
@@ -52,13 +51,31 @@ def get_coffees_drank_by_user(db: Session, koffie, user):
     return db.query(User.id).filter(user.id == koffie.user_id).filter()
 
 
-def get_coffee_beans_drank_by_user(db: Session, koffie, user):
+def get_sorts_of_coffee_beans_drank_by_user(db: Session, koffie, user):
     return db.query(User.id).filter(user.id == koffie.koffiebonen).filter()
 
 
-def get_thee_drank_by_user(db: Session, thee, user):
+def get_total_amount_of_thee_drank_by_user(db: Session, thee, user):
     return db.query(User.id).filter(user.id == thee.naam).filter()
 
 
+def get_total_amount_of_coffee_drank_by_user(db: Session, koffie, user):
+    return db.query(User.id).filter(user.id == koffie.naam).count()
 
-def
+# 2 cruds om een koffie en thee aan te maken.
+
+
+def create_koffie(db: Session, koffie: schemas.KoffieCreate):
+    db_koffie = koffie
+    db.add(db_koffie)
+    db.commit()
+    db.refresh(db_koffie)
+    return db_koffie
+
+
+def create_thee(db: Session, thee: schemas.TheeCreate):
+    db_thee = thee
+    db.add(db_thee)
+    db.commit()
+    db.refresh(db_thee)
+    return db_thee
