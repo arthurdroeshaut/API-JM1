@@ -71,3 +71,23 @@ class KoffieMachine(KoffieMachineBase):
     class Config:
         orm_mode = True
 
+
+class KoffiebonenBase(BaseModel):
+    __tablename__ ="Koffiebonen"
+
+    id = int
+    naam = str
+    beschrijving = str
+
+
+class KoffiebonenCreate(KoffiebonenBase):
+    pass
+
+
+class Koffiebonen(KoffiebonenBase):
+    id: int
+    Koffie_id: int
+
+    class Config:
+        orm_mode = True
+

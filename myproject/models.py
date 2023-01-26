@@ -1,3 +1,5 @@
+import datetime
+
 from sqlalchemy import Boolean, Column, ForeignKey, Integer, String
 from sqlalchemy.orm import relationship
 from pydantic import BaseModel
@@ -12,6 +14,7 @@ class User(Base):
     name = Column(String)
     hashed_password = Column(String)
     is_active = Column(Boolean, default=True)
+    date = datetime.datetime
 
 
 class KoffieMachine(Base):
@@ -32,10 +35,22 @@ class Koffie(Base):
     id = Column(Integer, primary_key=True, index=True)
     naam = Column(String, index=True)
     beschrijving = Column(String, index=True)
-    koffiebonen = Column(String, index=True)
     user_id = Column(Integer, ForeignKey("users.id"))
+    koffiebonen_id = Column(Integer, ForeignKey("Koffiebonen.id"))
 
     owner = relationship("User", back_populates="Koffie")
+
+
+class Koffiebonen(Base):
+    __tablename__ ="Koffiebonen"
+
+    id = Column(Integer, primary_key=True, index=True)
+    naam = Column(String, index=True)
+    beschrijving = Column(String, index=True)
+    Koffie_id = Column(Integer, ForeignKey("koffie.id"))
+
+
+
 
 
 class Thee(Base):

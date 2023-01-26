@@ -39,12 +39,12 @@ def get_total_amount_of_koffie(db: Session, koffie_id: int):
     return db.query(Koffie).filter(koffie_id == koffie_id).count()
 
 
+def get_total_amount_of_koffie_by_type(db: Session, koffie_id: int, koffiebonen: str):
+    return db.query(Koffie).filter(Koffie.koffiebonen and koffie_id).count()
+
+
 def get_total_amount_of_koffiebonen(db: Session, koffiebonen: str):
     return db.query(Koffie.koffiebonen).filter(Koffie.koffiebonen == koffiebonen).count()
-
-
-def get_total_amount_of_water_left(db: Session, water: str):
-    return db.query(Thee.water).filter(Thee.water == water).count()
 
 
 def get_coffees_drank_by_user(db: Session, koffie, user):
@@ -66,9 +66,25 @@ def get_total_amount_of_coffee_drank_by_user(db: Session, koffie, user):
 def get_level_of_milk(db: Session, melk_niveau):
     return db.query(KoffieMachine.id).filter(KoffieMachine.id == KoffieMachine.melk_niveau).count()
 
-def get_level_inside_koffeemachine(db: Session, )
+
+def get_level_of_coffee_beans(db: Session, koffiebonen_niveau):
+    return db.query(KoffieMachine.id).filter(KoffieMachine.id == KoffieMachine.koffiebonen_niveau).count()
+
+
+def get_level_of_water(db: Session, water_niveau):
+    return db.query(KoffieMachine.id).filter(KoffieMachine.id == KoffieMachine.water_niveau).count
+
+def get_average_of_coffees_by_day(db: Session, koffie):
+    return db.query(Koffie.naam).filter()
+
+
+
+
+def get_average_of_coffees_by_week(db: Session, koffie):
+
 
 # 2 cruds om een koffie en thee aan te maken.
+
 
 
 def create_koffie(db: Session, koffie: schemas.KoffieCreate):
