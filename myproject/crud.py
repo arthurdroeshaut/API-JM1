@@ -64,18 +64,18 @@ def get_total_amount_of_coffee_drank_by_user(db: Session, koffie, user):
 
 
 def get_level_of_milk(db: Session, melk_niveau):
-    return db.query(KoffieMachine.id).filter(KoffieMachine.id == KoffieMachine.melk_niveau).count()
+    return db.query(KoffieMachine.id).filter(KoffieMachine.id == melk_niveau).count()
 
 
 def get_level_of_coffee_beans(db: Session, koffiebonen_niveau):
-    return db.query(KoffieMachine.id).filter(KoffieMachine.id == KoffieMachine.koffiebonen_niveau).count()
+    return db.query(KoffieMachine.id).filter(KoffieMachine.id == koffiebonen_niveau).count()
 
 
 def get_level_of_water(db: Session, water_niveau):
-    return db.query(KoffieMachine.id).filter(KoffieMachine.id == KoffieMachine.water_niveau).count
+    return db.query(KoffieMachine.id).filter(KoffieMachine.id == water_niveau).count
 
 def get_average_of_coffees_by_day(db: Session, koffie):
-    return db.query(Koffie.naam).filter()
+    return db.query(koffie.naam).filter(models.Koffie.datum == models.Koffie.datum)
 
 
 

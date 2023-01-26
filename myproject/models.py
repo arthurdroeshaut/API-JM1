@@ -7,7 +7,7 @@ from database import Base
 
 
 class User(Base):
-    __tablename__ = "Users"
+    __tablename__ = "users"
 
     id = Column(Integer, primary_key=True)
     email = Column(String)
@@ -18,7 +18,7 @@ class User(Base):
 
 
 class KoffieMachine(Base):
-    __tablename__ = "KoffieMachine"
+    __tablename__ = "koffiemachine"
 
     id = Column(Integer, primary_key=True, index=True)
     naam = Column(String, index=True)
@@ -30,10 +30,11 @@ class KoffieMachine(Base):
 
 
 class Koffie(Base):
-    __tablename__ = "Koffie"
+    __tablename__ = "koffie"
 
     id = Column(Integer, primary_key=True, index=True)
     naam = Column(String, index=True)
+    datum = Column(String, index=True)
     beschrijving = Column(String, index=True)
     user_id = Column(Integer, ForeignKey("users.id"))
     koffiebonen_id = Column(Integer, ForeignKey("Koffiebonen.id"))

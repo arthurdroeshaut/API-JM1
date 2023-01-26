@@ -11,7 +11,7 @@ import schemas
 from schemas import KoffieCreate, Koffie, TheeCreate, Thee, UserCreate, User
 from database import SessionLocal, engine
 import os
-
+import sqlite3
 
 if not os.path.exists('.\sqlitedb'):
     os.makedirs('.\sqlitedb')
@@ -30,6 +30,9 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+conn = sqlite3.connect('coffee_machine.db')
+c = conn.cursor()
 
 
 # Dependency
@@ -79,6 +82,7 @@ def read_users(skip: int = 0, limit: int = 100, db: Session = Depends(get_db), t
     users = crud.get_user(db, skip=skip, limit=limit)
     return users
 
+
 # apis voor alle rest, koffies, thee, gebruikers,...
 # beginnende met de post endpoints.
 
@@ -103,15 +107,8 @@ def create_thee(thee: TheeCreate, db: Session = Depends(get_db)):
 
 # nu komen alle get endpoints...
 
-#@app.get("/Thee")
-#def get_thee(thee: Thee, db: Session = Depends(get_db)):
-
-
-#@app.get("/koffie")
-#def get_koffie(koffie: Koffie, db: Session = Depends(get_db)):
-
-
-#@app.get("/koffieMachine/niveaus")
-#def get_koffiemachineniveau(koffiemachine: melk_niveau, koffiebonen_niveau, melk_niveau, db: Session(get_db)):
-
-
+@app.post("/koffie")
+def make_coffee(coffee_name, beans):
+    c.execute("INSERT INTO Koffie (naam, koffiebonen) VALUES (?, ?, ?)", (coffee_name, beans))
+    conn.commit()
+    print("Koffie gemaakt!")

@@ -20,6 +20,7 @@ class KoffieBase(BaseModel):
     naam: str
     beschrijving: str
     koffiebonen: str
+    datum: str
 
 
 class KoffieCreate(KoffieBase):
