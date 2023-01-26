@@ -1,5 +1,5 @@
 from sqlalchemy.orm import Session
-from models import Koffie, User, Thee, KoffieMachine
+from models import Coffee, CoffeeMachine, CoffeeBeans, Tea, User, 
 import models
 import schemas
 import auth
@@ -25,79 +25,126 @@ def get_user_by_email(db: Session, email: str):
     return db.query(models.User).filter(models.User.email == email).first()
 
 
-# alle andere cruds
-
-def get_koffie(db: Session, koffie_id: int):
-    return db.query(Koffie).filter(koffie_id == koffie_id).first()
+# alle andere get cruds
 
 
-def get_thee(db: Session, thee_id: int):
-    return db.query(Thee).filter(thee_id == thee_id).first()
+def get_coffee_machine(db: Session, id: int):
+    return db.query(models.CoffeeMachine).filter(models.CoffeeMachine.id == id).first()
 
 
-def get_total_amount_of_koffie(db: Session, koffie_id: int):
-    return db.query(Koffie).filter(koffie_id == koffie_id).count()
+def get_coffee(db: Session, id: int):
+    return db.query(models.Coffee).filter(models.Coffee.id == id).first()
 
 
-def get_total_amount_of_koffie_by_type(db: Session, koffie_id: int, koffiebonen: str):
-    return db.query(Koffie).filter(Koffie.koffiebonen and koffie_id).count()
+def get_coffee_beans(db: Session, id: int):
+    return db.query(models.CoffeeBeans).filter(models.CoffeeBeans.id == id).first()
 
 
-def get_total_amount_of_koffiebonen(db: Session, koffiebonen: str):
-    return db.query(Koffie.koffiebonen).filter(Koffie.koffiebonen == koffiebonen).count()
+def get_tea(db: Session, id: int):
+    return db.query(models.Tea).filter(models.Tea.id == id).first()
 
 
-def get_coffees_drank_by_user(db: Session, koffie, user):
-    return db.query(User.id).filter(user.id == koffie.user_id).filter()
+def get_coffee_machines(db: Session, skip: int = 0, limit: int = 100):
+    return db.query(models.CoffeeMachine).offset(skip).limit(limit).all()
 
 
-def get_sorts_of_coffee_beans_drank_by_user(db: Session, koffie, user):
-    return db.query(User.id).filter(user.id == koffie.koffiebonen).filter()
+def get_coffees(db: Session, skip: int = 0, limit: int = 100):
+    return db.query(models.Coffee).offset(skip).limit(limit).all()
 
 
-def get_total_amount_of_thee_drank_by_user(db: Session, thee, user):
-    return db.query(User.id).filter(user.id == thee.naam).filter()
+def get_coffee_beanss(db: Session, skip: int = 0, limit: int = 100):
+    return db.query(models.CoffeeBeans).offset(skip).limit(limit).all()
 
 
-def get_total_amount_of_coffee_drank_by_user(db: Session, koffie, user):
-    return db.query(User.id).filter(user.id == koffie.naam).count()
+def get_teas(db: Session, skip: int = 0, limit: int = 100):
+    return db.query(models.Tea).offset(skip).limit(limit).all()
 
 
-def get_level_of_milk(db: Session, melk_niveau):
-    return db.query(KoffieMachine.id).filter(KoffieMachine.id == melk_niveau).count()
+# alle create cruds
 
 
-def get_level_of_coffee_beans(db: Session, koffiebonen_niveau):
-    return db.query(KoffieMachine.id).filter(KoffieMachine.id == koffiebonen_niveau).count()
-
-
-def get_level_of_water(db: Session, water_niveau):
-    return db.query(KoffieMachine.id).filter(KoffieMachine.id == water_niveau).count
-
-def get_average_of_coffees_by_day(db: Session, koffie):
-    return db.query(koffie.naam).filter(models.Koffie.datum == models.Koffie.datum)
-
-
-
-
-def get_average_of_coffees_by_week(db: Session, koffie):
-
-
-# 2 cruds om een koffie en thee aan te maken.
-
-
-
-def create_koffie(db: Session, koffie: schemas.KoffieCreate):
-    db_koffie = koffie
-    db.add(db_koffie)
+def create_coffee_machine(db: Session, coffe_machine: schemas.CoffeeMachineCreate):
+    coffe_machine_db = models.CoffeeMachine(**coffe_machine.dict())
+    db.add(coffe_machine_db)
     db.commit()
-    db.refresh(db_koffie)
-    return db_koffie
+    db.refresh(coffe_machine_db)
+    return coffe_machine_db
 
 
-def create_thee(db: Session, thee: schemas.TheeCreate):
-    db_thee = thee
-    db.add(db_thee)
+def create_coffee(db: Session, coffee: schemas.CoffeeCreate):
+    coffee_db = models.Coffee(**coffee.dict())
+    db.add(coffee_db)
     db.commit()
-    db.refresh(db_thee)
-    return db_thee
+    db.refresh(coffee_db)
+    return coffee_db
+
+
+def create_coffee_beans(db: Session, coffee_beans: schemas.CoffeeBeansCreate):
+    coffee_beans_db = models.CoffeeBeans(**coffee_beans.dict())
+    db.add(coffee_beans_db)
+    db.commit()
+    db.refresh(coffee_beans_db)
+    return coffee_beans_db
+
+
+def create_tea(db: Session, tea: schemas.TeaCreate):
+    tea_db = models.Tea(**tea.dict())
+    db.add(tea_db)
+    db.commit()
+    db.refresh(tea_db)
+    return tea_db
+
+
+def update_coffee_machine(db: Session, id: int, coffe_machine: schemas.CoffeeMachineUpdate):
+    coffe_machine_db = db.query(models.CoffeeMachine).filter(models.CoffeeMachine.id == id).first()
+    coffe_machine_db.update(coffe_machine.dict(exclude_unset=True))
+    db.commit()
+    db.refresh(coffe_machine_db)
+    return coffe_machine_db
+
+
+def update_coffee(db: Session, id: int, coffee: schemas.CoffeeUpdate):
+    coffee_db = db.query(models.Coffee).filter(models.Coffee.id == id).first()
+    coffee_db.update(coffee.dict(exclude_unset=True))
+    db.commit()
+    db.refresh(coffee_db)
+    return coffee_db
+
+
+def update_coffee_beans(db: Session, id: int, coffee_beans: schemas.CoffeeBeansUpdate):
+    coffee_beans_db = db.query(models.CoffeeBeans).filter(models.CoffeeBeans.id == id).first()
+    coffee_beans_db.update(coffee_beans.dict(exclude_unset=True))
+    db.commit()
+    db.refresh(coffee_beans_db)
+    return coffee_beans_db
+
+
+def update_tea(db: Session, id: int, tea: schemas.TeaUpdate):
+    tea_db = db.query(models.Tea).filter(models.Tea.id == id).first()
+    tea_db.update(tea.dict(exclude_unset=True))
+    db.commit()
+    db.refresh(tea_db)
+    return tea_db
+
+
+# alle delete cruds
+
+
+def delete_coffee_machine(db: Session, id: int):
+    db.query(models.CoffeeMachine).filter(models.CoffeeMachine.id == id).delete()
+    db.commit()
+
+
+def delete_coffee(db: Session, id: int):
+    db.query(models.Coffee).filter(models.Coffee.id == id).delete()
+    db.commit()
+
+
+def delete_coffee_beans(db: Session, id: int):
+    db.query(models.CoffeeBeans).filter(models.CoffeeBeans.id == id).delete()
+    db.commit()
+
+
+def delete_tea(db: Session, id: int):
+    db.query(models.Tea).filter(models.Tea.id == id).delete()
+    db.commit()

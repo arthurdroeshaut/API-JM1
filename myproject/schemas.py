@@ -16,78 +16,75 @@ class User(UserBase):
         orm_mode = True
 
 
-class KoffieBase(BaseModel):
-    naam: str
-    beschrijving: str
-    koffiebonen: str
-    datum: str
+class CoffeeBase(BaseModel):
+    name: str
+    description: str
+    CoffeeBeans: str
+    date: str
 
 
-class KoffieCreate(KoffieBase):
+class CoffeeCreate(CoffeeBase):
     pass
 
 
-class Koffie(KoffieBase):
+class Coffee(CoffeeBase):
     id: int
-    owner_id: int
+    user_id: int
 
     class Config:
         orm_mode = True
 
 
-class TheeBase(BaseModel):
-    naam: str
-    beschrijving: str
-    water_niveau: int
+class TeaBase(BaseModel):
+    name: str
+    description: str
+    water_level: int
 
 
-class TheeCreate(TheeBase):
+class TeaCreate(TeaBase):
     pass
 
 
-class Thee(TheeBase):
+class Tea(TeaBase):
     id: int
-    owner_id: int
+    user_id: int
 
     class Config:
         orm_mode = True
 
 
-class KoffieMachineBase(BaseModel):
-    naam: str
-    beschrijving: str
-    koffiebonen_niveau: int
-    melk_niveau: int
-    water_niveau: int
+class CoffeeMachineBase(BaseModel):
+    name: str
+    description: str
+    level_of_coffeebeans: float
+    level_of_water: float
+    level_of_milk: float
 
 
-class KoffieMachineCreate(KoffieMachineBase):
+class CoffeeMachineCreate(CoffeeMachineBase):
     pass
 
 
-class KoffieMachine(KoffieMachineBase):
+class CoffeeMachine(CoffeeMachineBase):
     id: int
-    thee_id: int
+    tea_id: int
 
     class Config:
         orm_mode = True
 
 
-class KoffiebonenBase(BaseModel):
-    __tablename__ ="Koffiebonen"
-
-    id = int
-    naam = str
-    beschrijving = str
+class CoffeeBeans(BaseModel):
+    name = str
+    description = str
 
 
-class KoffiebonenCreate(KoffiebonenBase):
+class CoffeeBeansCreate(CoffeeBeans):
     pass
 
 
-class Koffiebonen(KoffiebonenBase):
+class CoffeeBeans(CoffeeBeans):
     id: int
-    Koffie_id: int
+    coffee_id: int
 
     class Config:
         orm_mode = True

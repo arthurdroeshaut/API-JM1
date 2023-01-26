@@ -1,7 +1,7 @@
-import datetime
-
-from sqlalchemy import Boolean, Column, ForeignKey, Integer, String
+from sqlalchemy import Column, Integer, String, Float, Date
 from sqlalchemy.orm import relationship
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, Float, Date
 from pydantic import BaseModel
 from database import Base
 
@@ -17,65 +17,65 @@ class User(Base):
     date = datetime.datetime
 
 
-class KoffieMachine(Base):
-    __tablename__ = "koffiemachine"
+class CoffeeMachine(Base):
+    __tablename__ = 'coffee_machine'
 
-    id = Column(Integer, primary_key=True, index=True)
-    naam = Column(String, index=True)
-    beschrijving = Column(String, index=True)
-    melk_niveau = Column(Integer, index=True)
-    koffiebonen_niveau = Column(Integer, index=True)
-    water_niveau = Column(Integer, Index=True)
-    thee_id = Column(Integer, ForeignKey("thee.id"))
-
-
-class Koffie(Base):
-    __tablename__ = "koffie"
-
-    id = Column(Integer, primary_key=True, index=True)
-    naam = Column(String, index=True)
-    datum = Column(String, index=True)
-    beschrijving = Column(String, index=True)
-    user_id = Column(Integer, ForeignKey("users.id"))
-    koffiebonen_id = Column(Integer, ForeignKey("Koffiebonen.id"))
-
-    owner = relationship("User", back_populates="Koffie")
+    id = Column(Integer, primary_key=True)
+    description = Column(String)
+    level_of_water = Column(Float)
+    level_of_coffeebeans = Column(Float)
+    level_of_milk = Column(Float)
+    coffee = relationship('Coffee', back_populates='coffeemachine')
+    tea = relationship('Tea', back_populates='coffeemachine')
 
 
-class Koffiebonen(Base):
-    __tablename__ ="Koffiebonen"
+class Coffee(Base):
+    __tablename__ = 'coffee'
 
-    id = Column(Integer, primary_key=True, index=True)
-    naam = Column(String, index=True)
-    beschrijving = Column(String, index=True)
-    Koffie_id = Column(Integer, ForeignKey("koffie.id"))
+    id = Column(Integer, primary_key=True)
+    name = Column(String)
+    date = Column(Date)
+    description = Column(String)
+    water_id = Column(Integer, ForeignKey('coffee_machine.id'))
+    water = relationship('CoffeeMachine', back_populates='coffee')
+    coffeebeans = relationship('CoffeeBeans', back_populates='coffee')
 
 
+class CoffeeBeans(Base):
+    __tablename__ = 'coffee_beans'
+
+    id = Column(Integer, primary_key=True)
+    name = Column(String)
+    description = Column(String)
+    coffee_id = Column(Integer, ForeignKey('coffee.id'))
+    coffee = relationship('Coffee', back_populates='coffeebeans')
 
 
 
-class Thee(Base):
-    __tablename__ = "Thee"
 
-    id = Column(Integer, primary_key=True, index=True)
-    naam = Column(Integer, index=True)
-    beschrijving = Column(String, index=True)
-    water_niveau = Column(Integer, index=True)
-    user_id = Column(Integer, ForeignKey("users.id"))
-    KoffieMachine_id = Column(Integer, ForeignKey("KoffieMachine.id"))
+class Tea(Base):
+    __tablename__ = 'tea'
 
-    owner = relationship("User", back_populates="Thee")
+    id = Column(Integer, primary_key=True)
+    name = Column(String)
+    description = Column(String)
+    level_of_water = Column(Float)
+    coffeemachine_id = Column(Integer, ForeignKey('coffee_machine.id'))
+    coffeemachine = relationship('CoffeeMachine', back_populates='tea')
 
 
-class KoffieMachineCreate(KoffieMachine):
+class CoffeeMachineCreate(CoffeeMachine):
     pass
 
 
-class KoffieCreate(Koffie):
+class CoffeeCreate(Coffee):
     pass
 
 
-class TheeCreate(Thee):
+class CoffeeBeansCreate(CoffeeBeans):
+    pass
+
+class TeaCreate(Tea):
     pass
 
 

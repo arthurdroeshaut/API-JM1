@@ -87,22 +87,24 @@ def read_users(skip: int = 0, limit: int = 100, db: Session = Depends(get_db), t
 # beginnende met de post endpoints.
 
 
-@app.post("/Users/CreateCoffee")
-def create_coffee(koffie: KoffieCreate, db: Session = Depends(get_db)):
-    db_koffie = models.Koffie(**koffie.dict())
-    db.add(db_koffie)
-    db.commit()
-    db.refresh(db_koffie)
-    return db_koffie
+@app.post("/coffee-machine/")
+def create_coffee_machine(coffee_machine: schemas.CoffeeMachineCreate, db: Session = Depends(get_db)):
+    return crud.create_coffee_machine(db=db, coffee_machine=coffee_machine)
 
 
-@app.post("/Thee/CreateThee")
-def create_thee(thee: TheeCreate, db: Session = Depends(get_db)):
-    db_thee = models.Thee(**thee.dict())
-    db.add(db_thee)
-    db.commit()
-    db.refresh(db_thee)
-    return db_thee
+@app.post("/coffee/")
+def create_coffee(coffee: schemas.CoffeeCreate, db: Session = Depends(get_db)):
+    return crud.create_coffee(db=db, coffee=coffee)
+
+
+@app.post("/coffee-beans/")
+def create_coffee_beans(coffee_beans: schemas.CoffeeBeansCreate, db: Session = Depends(get_db)):
+    return crud.create_coffee_beans(db=db, coffee_beans=coffee_beans)
+
+
+@app.post("/tea/")
+def create_tea(tea: schemas.TeaCreate, db: Session = Depends(get_db)):
+    return crud.create_tea(db=db, tea=tea)
 
 
 # nu komen alle get endpoints...
