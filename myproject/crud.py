@@ -59,10 +59,6 @@ def get_teas(db: Session, skip: int = 0, limit: int = 100):
     return db.query(models.Tea).offset(skip).limit(limit).all()
 
 
-def get_coffee_by_date(db: Session, date: str):
-    return db.query(models.Coffee).filter(models.Coffee.date == date).all()
-
-
 # alle create cruds
 
 
@@ -169,6 +165,9 @@ def get_order_by_id(db: Session, id: int):
 def get_orders_by_date_by_user_id(db: Session, user_id: int): 
     return db.query(models.Orders).filter(models.Orders.user_id == user_id).order_by(models.Orders.date).all()
 
+def get_user_orders(db: Session, user_id: int):
+    return db.query(models.Orders).filter(models.Orders.user_id == user_id).order_by(models.Orders.date.asc()).all()
+
 
 def get_order(db: Session, id: int):
     return db.query(models.Orders).filter(models.Orders.id == id).first()
@@ -183,7 +182,7 @@ def create_orders(db: Session, orders: schemas.OrdersCreate):
 
 
 def create_orders_coffee(db: Session, orders_coffee: schemas.OrdersCoffeeCreate):
-    orders_coffee_db = models.OrdersCoffee(**orders_coffee.dict())
+    orders_coffee_db = models.Orders.coffee(**orders_coffee.dict())
     db.add(orders_coffee_db)
     db.commit()
     db.refresh(orders_coffee_db)
@@ -199,7 +198,7 @@ def update_orders(db: Session, id: int, orders: schemas.OrdersUpdate):
 
 
 def update_orders_coffee(db: Session, id: int, orders_coffee: schemas.OrdersCoffeeUpdate):
-    orders_coffee_db = db.query(models.OrdersCoffee).filter(models.OrdersCoffee.id == id).first()
+    orders_coffee_db = db.query(models.Orders.coffee).filter(models.Orders.coffee_id == id).first()
     orders_coffee_db.update(orders_coffee.dict(exclude_unset=True))
     db.commit()
     db.refresh(orders_coffee_db)
@@ -207,7 +206,7 @@ def update_orders_coffee(db: Session, id: int, orders_coffee: schemas.OrdersCoff
 
 
 def update_orders_tea(db: Session, id: int, orders_tea: schemas.OrdersTeaUpdate):
-    orders_tea_db = db.query(models.OrdersTea).filter(models.OrdersTea.id == id).first()
+    orders_tea_db = db.query(models.Orders.tea).filter(models.Orders.tea_id == id).first()
     orders_tea_db.update(orders_tea.dict(exclude_unset=True))
     db.commit()
     db.refresh(orders_tea_db)

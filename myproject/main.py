@@ -8,7 +8,7 @@ import auth
 import models
 import crud
 import schemas
-from schemas import KoffieCreate, Koffie, TheeCreate, Thee, UserCreate, User
+from schemas import UserUpdate, UserCreate, User, CoffeeMachineCreate, CoffeeMachine, CoffeeBeansCreate, CoffeeBeans, OrdersCreate, Orders, CoffeeMachineUpdate, CoffeeBeansUpdate, CoffeeUpdate, TeaUpdate, TeaCreate, Tea, CoffeeCreate, Coffee
 from database import SessionLocal, engine
 import os
 import sqlite3
@@ -92,6 +92,10 @@ def create_coffee_machine(coffee_machine: schemas.CoffeeMachineCreate, db: Sessi
     return crud.create_coffee_machine(db=db, coffee_machine=coffee_machine)
 
 
+@app.post("/orders/")
+def create_orders(orders: schemas.OrdersCreate, db: Session = Depends(get_db)):
+    return crud.create_orders(db=db, orders=orders)
+
 @app.post("/coffee/")
 def create_coffee(coffee: schemas.CoffeeCreate, db: Session = Depends(get_db)):
     return crud.create_coffee(db=db, coffee=coffee)
@@ -149,6 +153,24 @@ def read_coffee_beans(skip: int = 0, limit: int = 100, db: Session = Depends(get
 def read_teas(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     return crud.get_teas(db, skip=skip, limit=limit)
 
-@app.get("/coffee/date/{date}")
-def read_coffee_by_date(date: str, db: Session = Depends(get_db)):
-    return crud.get_coffee_by_date(db, date)
+
+@app.get("/order/date/{date}")
+def get_order_by_date(date: str, db: Session = Depends(get_db)):
+    return crud.get_order_by_date(db, date)
+
+
+# belangrijkste get endpoints: orders op basis van users hun id, en orders op basis van de datum, in de crud wordt dit al ascended opgezet.
+
+
+@app.get("/orders/user/{user_id}")
+def read_user_orders(user_id: int, db: Session = Depends(get_db)):
+    return crud.get_user_orders(db, user_id)
+
+
+# hieronder een get endpoint om een order op te vragen op basis van datum.
+
+@app.get("/order/date/{date}")
+def get_order_by_date(date: str, db: Session = Depends(get_db)):
+    return crud.get_order_by_date(db, date)
+
+

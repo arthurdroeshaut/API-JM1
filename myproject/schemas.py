@@ -22,7 +22,6 @@ class User(UserBase):
 
 class CoffeeBase(BaseModel):
     name: str
-    description: str
     CoffeeBeans: str
 
 
@@ -48,7 +47,6 @@ class Coffee(CoffeeBase):
 
 class TeaBase(BaseModel):
     name: str
-    description: str
     water_level: int
 
 
@@ -92,20 +90,20 @@ class CoffeeMachine(CoffeeMachineBase):
         orm_mode = True
 
 
-class CoffeeBeans(BaseModel):
+class CoffeeBeansBase(BaseModel):
     name = str
     description = str
 
 
-class CoffeeBeansCreate(CoffeeBeans):
+class CoffeeBeansCreate(CoffeeBeansBase):
     pass
 
 
-class CoffeeBeansUpdate(CoffeeBeans):
+class CoffeeBeansUpdate(CoffeeBeansBase):
     pass
 
 
-class CoffeeBeans(CoffeeBeans):
+class CoffeeBeans(CoffeeBeansBase):
     id: int
     coffee_id: int
 
@@ -119,7 +117,7 @@ class Orders(BaseModel):
     price: float
     
     
-class OrderCreate(Orders):
+class OrdersCreate(Orders):
     pass
 
 

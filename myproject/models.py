@@ -14,7 +14,9 @@ class User(Base):
     name = Column(String)
     hashed_password = Column(String)
     is_active = Column(Boolean, default=True)
-    date = datetime.datetime
+    coffee = relationship('Coffee', back_populates='user')
+    order = relationship('Orders', back_populates='user')
+    order_id = Column(Integer, ForeignKey('orders.id'))
 
 
 class CoffeeMachine(Base):
@@ -34,11 +36,14 @@ class Coffee(Base):
 
     id = Column(Integer, primary_key=True)
     name = Column(String)
-    date = Column(Date)
-    description = Column(String)
+    milk_id = Column(Integer, ForeignKey('coffee_machine.id'))
+    milk = relationship('CoffeeMachine', back_populates='coffee')
     water_id = Column(Integer, ForeignKey('coffee_machine.id'))
     water = relationship('CoffeeMachine', back_populates='coffee')
+    coffeebeans_id = Column(Integer, ForeignKey('coffee_beans.id'))
     coffeebeans = relationship('CoffeeBeans', back_populates='coffee')
+    order_id = Column(Integer, ForeignKey('orders.id'))
+    order = relationship('Orders', back_populates='coffee')
 
 
 class CoffeeBeans(Base):
@@ -51,18 +56,35 @@ class CoffeeBeans(Base):
     coffee = relationship('Coffee', back_populates='coffeebeans')
 
 
-
-
 class Tea(Base):
     __tablename__ = 'tea'
 
     id = Column(Integer, primary_key=True)
     name = Column(String)
-    description = Column(String)
-    level_of_water = Column(Float)
+    water_id = Column(Integer, ForeignKey('coffee_machine.id'))
+    water = relationship('CoffeeMachine', back_populates='tea')
     coffeemachine_id = Column(Integer, ForeignKey('coffee_machine.id'))
     coffeemachine = relationship('CoffeeMachine', back_populates='tea')
+    order_id = Column(Integer, ForeignKey('orders.id'))
+    order = relationship('Orders', back_populates='tea')
 
+
+class Orders(Base):
+    __tablename__ = 'orders'
+    
+    id = Column(Integer, primary_key=True)
+    date = Column(Date)
+    quantity = Column(Integer)
+    price = Column(Float)
+    coffee_name = Column(String)
+    coffee_id = Column(Integer, ForeignKey('coffee.id'))
+    coffee = relationship('Coffee', back_populates='order')
+    tea_id = Column(Integer, ForeignKey('tea.id'))
+    tea_name = Column(String)
+    tea = relationship('Tea', back_populates='order')
+    user_id = Column(Integer, ForeignKey('users.id'))
+    user = relationship('User', back_populates='orders')
+    
 
 class CoffeeMachineCreate(CoffeeMachine):
     pass
@@ -75,7 +97,12 @@ class CoffeeCreate(Coffee):
 class CoffeeBeansCreate(CoffeeBeans):
     pass
 
+
 class TeaCreate(Tea):
+    pass
+
+
+class OrderCreate(Orders):
     pass
 
 
@@ -85,3 +112,7 @@ class UserBase(BaseModel):
 
 class UserCreate(UserBase):
     password: str
+
+
+class OrderCreate(Orders):
+    pass
