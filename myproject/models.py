@@ -13,10 +13,8 @@ class User(Base):
     name = Column(String)
     hashed_password = Column(String)
     is_active = Column(Boolean, default=True)
-    coffee = relationship('Coffee', back_populates='user')
-    coffee_id = Column(Integer, ForeignKey('coffee.id'))
-    order = relationship('Orders', back_populates='user')
-    order_id = Column(Integer, ForeignKey('orders.id'))
+    coffee = relationship('Coffee', back_populates='user', foreign_keys=['coffee.user_id'])
+    order = relationship('Orders', back_populates='user', foreign_keys=['orders.user_id'])
 
 
 class CoffeeMachine(Base):
