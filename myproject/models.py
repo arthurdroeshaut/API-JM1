@@ -14,6 +14,7 @@ class User(Base):
     hashed_password = Column(String)
     is_active = Column(Boolean, default=True)
     coffee = relationship('Coffee', back_populates='user')
+    coffee_id = Column(Integer, ForeignKey('coffee.id'))
     order = relationship('Orders', back_populates='user')
     order_id = Column(Integer, ForeignKey('orders.id'))
 
@@ -27,7 +28,9 @@ class CoffeeMachine(Base):
     level_of_coffeebeans = Column(Float)
     level_of_milk = Column(Float)
     coffee = relationship('Coffee', back_populates='coffeemachine')
+    coffee_id = Column(Integer, ForeignKey('coffee.id'))
     tea = relationship('Tea', back_populates='coffeemachine')
+    tea_id = Column(Integer, ForeignKey('tea.id'))
 
 
 class Coffee(Base):
