@@ -1,4 +1,3 @@
-from sqlalchemy import Column, Integer, String, Float, Date
 from sqlalchemy.orm import relationship
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, Float, Date
@@ -40,8 +39,8 @@ class Coffee(Base):
     milk = relationship('CoffeeMachine', back_populates='coffee')
     water_id = Column(Integer, ForeignKey('coffee_machine.id'))
     water = relationship('CoffeeMachine', back_populates='coffee')
-    coffeebeans_id = Column(Integer, ForeignKey('coffee_beans.id'))
-    coffeebeans = relationship('CoffeeBeans', back_populates='coffee')
+    CoffeeBeans_id = Column(Integer, ForeignKey('coffee_beans.id'))
+    CoffeeBeans = relationship('CoffeeBeans', back_populates='coffee')
     order_id = Column(Integer, ForeignKey('orders.id'))
     order = relationship('Orders', back_populates='coffee')
 
@@ -76,14 +75,10 @@ class Orders(Base):
     date = Column(Date)
     quantity = Column(Integer)
     price = Column(Float)
-    coffee_name = Column(String)
     coffee_id = Column(Integer, ForeignKey('coffee.id'))
-    coffee = relationship('Coffee', back_populates='order')
     tea_id = Column(Integer, ForeignKey('tea.id'))
     tea_name = Column(String)
-    tea = relationship('Tea', back_populates='order')
     user_id = Column(Integer, ForeignKey('users.id'))
-    user = relationship('User', back_populates='orders')
     
 
 class CoffeeMachineCreate(CoffeeMachine):

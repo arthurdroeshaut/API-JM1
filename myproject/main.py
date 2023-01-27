@@ -101,13 +101,13 @@ def create_coffee(coffee: schemas.CoffeeCreate, db: Session = Depends(get_db)):
     return crud.create_coffee(db=db, coffee=coffee)
 
 
-@app.post("/coffee-beans/")
+@app.post("/coffeebeans/")
 def create_coffee_beans(coffee_beans: schemas.CoffeeBeansCreate, db: Session = Depends(get_db)):
     return crud.create_coffee_beans(db=db, coffee_beans=coffee_beans)
 
 
 @app.post("/tea/")
-def create_tea(tea: schemas.TeaCreate, db: Session = Depends(get_db)):
+def create_teas(tea: schemas.TeaCreate, db: Session = Depends(get_db)):
     return crud.create_tea(db=db, tea=tea)
 
 
