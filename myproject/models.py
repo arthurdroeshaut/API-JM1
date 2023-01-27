@@ -46,7 +46,8 @@ class Coffee(Base):
     CoffeeBeans = relationship('CoffeeBeans', back_populates='coffee')
     order_id = Column(Integer, ForeignKey('orders.id'))
     order = relationship('Orders', back_populates='coffee')
-
+    user_id = Column(Integer, ForeignKey('users.id'))
+    user = relationship('User', back_populates='coffee')
 
 class CoffeeBeans(Base):
     __tablename__ = 'coffee_beans'
