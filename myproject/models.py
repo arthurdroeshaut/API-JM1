@@ -35,28 +35,35 @@ class CoffeeMachine(Base):
 
 class Coffee(Base):
     __tablename__ = 'coffee'
-
+    
     id = Column(Integer, primary_key=True)
     name = Column(String)
     milk_id = Column(Integer, ForeignKey('coffee_machine.id'))
     milk = relationship('CoffeeMachine', back_populates='coffee')
     water_id = Column(Integer, ForeignKey('coffee_machine.id'))
     water = relationship('CoffeeMachine', back_populates='coffee')
-    CoffeeBeans_id = Column(Integer, ForeignKey('coffee_beans.id'))
-    CoffeeBeans = relationship('CoffeeBeans', back_populates='coffee')
+    CoffeeBeans = relationship("CoffeeBeans", secondary="coffee_coffee_beans", back_populates="coffee")
     order_id = Column(Integer, ForeignKey('orders.id'))
     order = relationship('Orders', back_populates='coffee')
     user_id = Column(Integer, ForeignKey('users.id'))
     user = relationship('User', back_populates='coffee')
 
+
 class CoffeeBeans(Base):
     __tablename__ = 'coffee_beans'
-
+    
     id = Column(Integer, primary_key=True)
     name = Column(String)
     description = Column(String)
+    coffee = relationship("Coffee", secondary="coffee_coffee_beans", back_populates="coffee_beans")
+
+
+class CoffeeCoffeeBeans(Base):
+    __tablename__ = 'coffee_coffee_beans'
+
+    id = Column(Integer, primary_key=True)
     coffee_id = Column(Integer, ForeignKey('coffee.id'))
-    coffee = relationship('Coffee', back_populates='coffeebeans')
+    coffee_beans_id = Column(Integer, ForeignKey('coffee_beans.id'))
 
 
 class Tea(Base):
