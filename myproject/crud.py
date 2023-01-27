@@ -1,7 +1,6 @@
 from sqlalchemy.orm import Session
-from models import Coffee, CoffeeMachine, CoffeeBeans, Tea, User, 
 import models
-import schemas
+import schemas 
 import auth
 
 
@@ -58,6 +57,10 @@ def get_coffee_beanss(db: Session, skip: int = 0, limit: int = 100):
 
 def get_teas(db: Session, skip: int = 0, limit: int = 100):
     return db.query(models.Tea).offset(skip).limit(limit).all()
+
+
+def get_coffee_by_date(db: Session, date: str):
+    return db.query(models.Coffee).filter(models.Coffee.date == date).all()
 
 
 # alle create cruds
@@ -148,3 +151,71 @@ def delete_coffee_beans(db: Session, id: int):
 def delete_tea(db: Session, id: int):
     db.query(models.Tea).filter(models.Tea.id == id).delete()
     db.commit()
+
+
+# alle cruds met orders
+
+
+def get_orders(db: Session, skip: int = 0, limit: int = 100):
+    return db.query(models.Orders).offset(skip).limit(limit).all()
+
+def get_order_by_date(db: Session, date: str):
+    return db.query(models.Orders).filter(models.Orders.date == date).all()
+
+def get_order_by_id(db: Session, id: int):
+    return db.query(models.Orders).filter(models.Orders.orders_id == id).all()
+
+
+def get_orders_by_date_by_user_id(db: Session, user_id: int): 
+    return db.query(models.Orders).filter(models.Orders.user_id == user_id).order_by(models.Orders.date).all()
+
+
+def get_order(db: Session, id: int):
+    return db.query(models.Orders).filter(models.Orders.id == id).first()
+
+
+def create_orders(db: Session, orders: schemas.OrdersCreate):
+    orders_db = models.Orders(**orders.dict())
+    db.add(orders_db)
+    db.commit()
+    db.refresh(orders_db)
+    return orders_db
+
+
+def create_orders_coffee(db: Session, orders_coffee: schemas.OrdersCoffeeCreate):
+    orders_coffee_db = models.OrdersCoffee(**orders_coffee.dict())
+    db.add(orders_coffee_db)
+    db.commit()
+    db.refresh(orders_coffee_db)
+    return orders_coffee_db
+
+
+def update_orders(db: Session, id: int, orders: schemas.OrdersUpdate):
+    orders_db = db.query(models.Orders).filter(models.Orders.id == id).first()
+    orders_db.update(orders.dict(exclude_unset=True))
+    db.commit()
+    db.refresh(orders_db)
+    return orders_db
+
+
+def update_orders_coffee(db: Session, id: int, orders_coffee: schemas.OrdersCoffeeUpdate):
+    orders_coffee_db = db.query(models.OrdersCoffee).filter(models.OrdersCoffee.id == id).first()
+    orders_coffee_db.update(orders_coffee.dict(exclude_unset=True))
+    db.commit()
+    db.refresh(orders_coffee_db)
+    return orders_coffee_db
+
+
+def update_orders_tea(db: Session, id: int, orders_tea: schemas.OrdersTeaUpdate):
+    orders_tea_db = db.query(models.OrdersTea).filter(models.OrdersTea.id == id).first()
+    orders_tea_db.update(orders_tea.dict(exclude_unset=True))
+    db.commit()
+    db.refresh(orders_tea_db)
+    return orders_tea_db
+
+
+def delete_order(db: Session, id: int):
+    db.query(models.Orders).filter(models.Orders.id == id).delete()
+    db.commit()
+    
+
