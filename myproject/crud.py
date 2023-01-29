@@ -2,6 +2,7 @@ from sqlalchemy.orm import Session
 import models
 import schemas 
 import auth
+from datetime import datetime
 
 
 # de create user voor hashing alsook om de users op te vragen via email.
@@ -62,16 +63,16 @@ def get_teas(db: Session, skip: int = 0, limit: int = 100):
 # alle create cruds
 
 
-def create_coffee_machine(db: Session, coffe_machine: schemas.CoffeeMachineCreate):
-    coffe_machine_db = models.CoffeeMachine(**coffe_machine.dict())
-    db.add(coffe_machine_db)
+def create_coffee_machine(db: Session, coffee_machine: schemas.CoffeeMachineCreate):
+    coffee_machine_db = models.CoffeeMachine(name=coffee_machine.name, description=coffee_machine.description, level_of_water=coffee_machine.level_of_water, level_of_coffeebeans=coffee_machine.level_of_coffeebeans, level_of_milk=coffee_machine.level_of_milk)
+    db.add(coffee_machine_db)
     db.commit()
-    db.refresh(coffe_machine_db)
-    return coffe_machine_db
+    db.refresh(coffee_machine_db)
+    return coffee_machine_db
 
 
 def create_coffee(db: Session, coffee: schemas.CoffeeCreate):
-    coffee_db = models.Coffee(**coffee.dict())
+    coffee_db = models.Coffee(name=coffee.name, description=coffee.description)
     db.add(coffee_db)
     db.commit()
     db.refresh(coffee_db)
@@ -79,7 +80,7 @@ def create_coffee(db: Session, coffee: schemas.CoffeeCreate):
 
 
 def create_coffee_beans(db: Session, coffee_beans: schemas.CoffeeBeansCreate):
-    coffee_beans_db = models.CoffeeBeans(**coffee_beans.dict())
+    coffee_beans_db = models.CoffeeBeans(name=coffee_beans.name)
     db.add(coffee_beans_db)
     db.commit()
     db.refresh(coffee_beans_db)
@@ -87,7 +88,7 @@ def create_coffee_beans(db: Session, coffee_beans: schemas.CoffeeBeansCreate):
 
 
 def create_tea(db: Session, tea: schemas.TeaCreate):
-    tea_db = models.Tea(**tea.dict())
+    tea_db = models.Tea(name=tea.name)
     db.add(tea_db)
     db.commit()
     db.refresh(tea_db)
@@ -159,14 +160,14 @@ def get_order_by_date(db: Session, date: str):
     return db.query(models.Orders).filter(models.Orders.date == date).all()
 
 def get_order_by_id(db: Session, id: int):
-    return db.query(models.Orders).filter(models.Orders.orders_id == id).all()
+    return db.query(models.Orders).filter(models.Orders.id == id).all()
 
 
 def get_orders_by_date_by_user_id(db: Session, user_id: int): 
-    return db.query(models.Orders).filter(models.Orders.user_id == user_id).order_by(models.Orders.date).all()
+    return db.query(models.Orders).filter(models.Orders.id == user_id).order_by(models.Orders.date).all()
 
 def get_user_orders(db: Session, user_id: int):
-    return db.query(models.Orders).filter(models.Orders.user_id == user_id).order_by(models.Orders.date.asc()).all()
+    return db.query(models.Orders).filter(models.Orders.id == user_id).order_by(models.Orders.date.asc()).all()
 
 
 def get_order(db: Session, id: int):
@@ -174,7 +175,8 @@ def get_order(db: Session, id: int):
 
 
 def create_orders(db: Session, orders: schemas.OrdersCreate):
-    orders_db = models.Orders(**orders.dict())
+    now=datetime.now()
+    orders_db = models.Orders(quantity=orders.quantity, date=now , price=orders.price)
     db.add(orders_db)
     db.commit()
     db.refresh(orders_db)

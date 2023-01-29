@@ -1,4 +1,8 @@
 from pydantic import BaseModel
+import datetime
+from datetime import datetime
+
+
 
 
 class UserBase(BaseModel):
@@ -22,7 +26,8 @@ class User(UserBase):
 
 class CoffeeBase(BaseModel):
     name: str
-    CoffeeBeans: str
+    description: str
+ 
 
 
 class CoffeeCreate(CoffeeBase):
@@ -35,11 +40,6 @@ class CoffeeUpdate(CoffeeBase):
 
 class Coffee(CoffeeBase):
     id: int
-    user_id: int
-    water_id: int
-    milk_id: int
-    coffeebeans_id: int
-    order_id: int
 
     class Config:
         orm_mode = True
@@ -47,7 +47,6 @@ class Coffee(CoffeeBase):
 
 class TeaBase(BaseModel):
     name: str
-    water_level: int
 
 
 class TeaCreate(TeaBase):
@@ -91,8 +90,7 @@ class CoffeeMachine(CoffeeMachineBase):
 
 
 class CoffeeBeansBase(BaseModel):
-    name = str
-    description = str
+    name: str
 
 
 class CoffeeBeansCreate(CoffeeBeansBase):
@@ -105,14 +103,12 @@ class CoffeeBeansUpdate(CoffeeBeansBase):
 
 class CoffeeBeans(CoffeeBeansBase):
     id: int
-    coffee_id: int
 
     class Config:
         orm_mode = True
 
 
 class Orders(BaseModel):
-    date: str
     quantity: int
     price: float
     
@@ -124,9 +120,8 @@ class OrdersCreate(Orders):
 class Orders(Orders):
     id: int
     user_id: int
-    product_id: int
-    coffee_id: int
-    tea_id: int
+    date : str
+    
 
     class Config:
         orm_mode = True
