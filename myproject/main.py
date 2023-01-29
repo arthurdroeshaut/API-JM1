@@ -31,9 +31,6 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-conn = sqlite3.connect('coffee_machine.db')
-c = conn.cursor()
-
 
 # Dependency
 def get_db():
@@ -101,7 +98,7 @@ def create_coffee(coffee: schemas.CoffeeCreate, db: Session = Depends(get_db)):
     return crud.create_coffee(db=db, coffee=coffee)
 
 
-@app.post("/coffeebeans/")
+@app.post("/coffee-beans/")
 def create_coffee_beans(coffee_beans: schemas.CoffeeBeansCreate, db: Session = Depends(get_db)):
     return crud.create_coffee_beans(db=db, coffee_beans=coffee_beans)
 

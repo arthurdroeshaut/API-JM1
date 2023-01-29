@@ -52,7 +52,7 @@ def get_coffees(db: Session, skip: int = 0, limit: int = 100):
     return db.query(models.Coffee).offset(skip).limit(limit).all()
 
 
-def get_coffee_beanss(db: Session, skip: int = 0, limit: int = 100):
+def get_coffee_beans(db: Session, skip: int = 0, limit: int = 100):
     return db.query(models.CoffeeBeans).offset(skip).limit(limit).all()
 
 
