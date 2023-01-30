@@ -87,7 +87,7 @@ def create_coffee_beans(db: Session, coffee_beans: schemas.CoffeeBeansCreate):
     return coffee_beans_db
 
 
-def create_tea(db: Session, tea: schemas.TeaCreate):
+def create_teas(db: Session, tea: schemas.TeaCreate):
     tea_db = models.Tea(name=tea.name)
     db.add(tea_db)
     db.commit()
@@ -177,9 +177,10 @@ def get_order(db: Session, id: int):
 def get_order_date(db: Session, date: str):
     return db.query(models.Orders).filter(models.Orders.date == date).first()
 
+
 def create_orders(db: Session, orders: schemas.OrdersCreate):
     now=datetime.now()
-    orders_db = models.Orders(quantity=orders.quantity, date=now , price=orders.price)
+    orders_db = models.Orders(date=now , soort_koffie=orders.soort_koffie, soort_thee=orders.soort_thee, type_bonen=orders.type_bonen, type_drank=orders.Type_drank)
     db.add(orders_db)
     db.commit()
     db.refresh(orders_db)
@@ -223,3 +224,29 @@ def delete_order(db: Session, id: int):
     db.commit()
     
 
+def get_data_by_day(db: Session, date: str):
+    return db.query(models.Orders).filter(models.Orders.date == date).all()
+
+
+def get_orders(db: Session, skip: int = 0, limit: int = 100):
+    return db.query(models.Orders).offset(skip).limit(limit).all()
+
+
+def get_orders_koffie(db: Session, skip: int = 0, limit: int = 100):
+    return db.query(models.Orders.coffee).offset(skip).limit(limit).all()
+
+
+def create_drank(db: Session, drankjes: schemas.DrankjesCreate):
+    drankjes_db = models.Drankjes(type_drank=drankjes.type_drank)
+    db.add(drankjes_db)
+    db.commit()
+    db.refresh(drankjes_db)
+    return drankjes_db
+
+
+def create_tea(db: Session, tea: schemas.TeaCreate):
+    tea_db = models.Tea(name=tea.name)
+    db.add(tea_db)
+    db.commit()
+    db.refresh(tea_db)
+    return tea_db

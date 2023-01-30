@@ -119,6 +119,7 @@ class Orders(BaseModel):
     soort_koffie: str
     soort_thee: str
     type_bonen: str
+
     
     
 class OrdersCreate(Orders):
@@ -132,6 +133,7 @@ class Order(Orders):
     CoffeeMachine_id: int
     Coffee_id: int
     Tea_id: int
+    drankjes_id: int
     
 
     class Config:
@@ -152,3 +154,21 @@ class OrdersTeaCreate(Orders):
 
 class OrdersTeaUpdate(Orders):
     pass
+
+class Drankjes(BaseModel):
+    type_drank: str
+  
+        
+class DrankjesCreate(Drankjes):
+    pass
+
+class DrankjesUpdate(Drankjes):
+    pass
+
+class Drankje(Drankjes):
+    id: int
+    order_id: int
+    
+
+    class Config:
+        orm_mode = True

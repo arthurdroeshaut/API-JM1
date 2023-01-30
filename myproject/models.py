@@ -51,21 +51,24 @@ class Orders(Base):
     coffee_id = Column(Integer, ForeignKey('coffee.id'))
     coffee_beans_id = Column(Integer, ForeignKey('coffee_beans.id'))
     tea_id = Column(Integer, ForeignKey('tea.id'))
+    drankjes_id= Column(Integer, ForeignKey('drankjes.id'))
     date = Column(String)
-    Type_drank = Column(String)
+    type_drank = Column(String)
     type_bonen = Column(String)
     soort_koffie = Column(String)
     soort_thee = Column(String)
+    
     
     user = relationship("User", foreign_keys=[user_id])
     coffee = relationship("Coffee", foreign_keys=[coffee_id])
     coffee_beans = relationship("CoffeeBeans", foreign_keys=[coffee_beans_id])
     tea = relationship("Tea", foreign_keys=[tea_id])
+    drankjes = relationship("Drankjes", foreign_keys=[drankjes_id])
 
     
     
 class User(Base):
-    __tablename__ = "users"
+    __tablename__ = 'users'
 
     id = Column(Integer, primary_key=True)
     email = Column(String)
@@ -76,6 +79,12 @@ class User(Base):
     
     orders = relationship("Orders", foreign_keys=[orders_id])
 
+
+class Drankjes(Base):
+    __tablename__ = 'drankjes'
+    
+    id = Column(Integer, primary_key=True)
+    type_drank = Column(String)
 
 class CoffeeMachineCreate(CoffeeMachine):
     pass
@@ -107,4 +116,13 @@ class UserCreate(UserBase):
 
 
 class OrderCreate(Orders):
+    pass
+
+
+
+class DrankjesCreate(Drankjes):
+    pass
+
+
+class DrankjesUpdate(Drankjes):
     pass

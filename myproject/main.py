@@ -110,6 +110,10 @@ def create_teas(tea: schemas.TeaCreate, db: Session = Depends(get_db)):
     return crud.create_tea(db=db, tea=tea)
 
 
+@app.post("/drank/")
+def create_drankjes(drankjes: schemas.DrankjesCreate, db: Session = Depends(get_db)):
+    return crud.create_drank(db=db, drankjes=drankjes)
+
 # nu komen alle get endpoints...
 
 
@@ -176,4 +180,9 @@ def get_order_by_date(date: str, db: Session = Depends(get_db)):
 @app.get("/orders/date")
 def get_order_date(date: str, db: Session = Depends(get_db)):
     return crud.get_order_date(db, date)
+
+
+@app.get("/orders/")
+def get_orders(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
+    return crud.get_orders(db, skip=skip, limit=limit)
 
