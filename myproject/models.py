@@ -47,9 +47,18 @@ class Orders(Base):
     __tablename__ = 'orders'
     
     id = Column(Integer, primary_key=True)
+    user_id = Column(Integer, ForeignKey('users.id'))
+    coffee_id = Column(Integer, ForeignKey('coffee.id'))
+    coffee_beans_id = Column(Integer, ForeignKey('coffee_beans.id'))
+    tea_id = Column(Integer, ForeignKey('tea.id'))
     date = Column(String)
     quantity = Column(Integer)
     price = Column(Float)
+
+    user = relationship("User", foreign_keys=[user_id])
+    coffee = relationship("Coffee", foreign_keys=[coffee_id])
+    coffee_beans = relationship("CoffeeBeans", foreign_keys=[coffee_beans_id])
+    tea = relationship("Tea", foreign_keys=[tea_id])
 
     
     
@@ -61,6 +70,9 @@ class User(Base):
     name = Column(String)
     hashed_password = Column(String)
     is_active = Column(Boolean, default=True)
+    orders_id = Column(Integer, ForeignKey('orders.id'))
+    
+    orders = relationship("Orders", foreign_keys=[orders_id])
 
 
 class CoffeeMachineCreate(CoffeeMachine):
