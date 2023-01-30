@@ -9,6 +9,7 @@ class UserBase(BaseModel):
     email: str
 
 
+
 class UserCreate(UserBase):
     password: str
 
@@ -19,7 +20,8 @@ class UserUpdate(UserBase):
 
 class User(UserBase):
     id: int
-    order_id : int
+    orders_id: int = None
+
 
     class Config:
         orm_mode = True
