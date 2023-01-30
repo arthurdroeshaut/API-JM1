@@ -76,7 +76,7 @@ def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
 
 @app.get("/users/", response_model=list[schemas.User])
 def read_users(skip: int = 0, limit: int = 100, db: Session = Depends(get_db), token: str = Depends(oauth2_scheme)):
-    users = crud.get_user(db, skip=skip, limit=limit)
+    users = crud.get_user(db=db, user_id=token)
     return users
 
 
