@@ -7,7 +7,7 @@ from datetime import datetime
 
 class UserBase(BaseModel):
     email: str
-#    groep: str
+    groep: str
 
 class UserCreate(UserBase):
     password: str

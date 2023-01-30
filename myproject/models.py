@@ -71,7 +71,7 @@ class User(Base):
     email = Column(String)
     password = Column(String)
     is_active = Column(Boolean, default=True)
-#    groep = Column(String)
+    groep = Column(String)
     orders_id = Column(Integer, ForeignKey('orders.id'))
     
     orders = relationship("Orders", foreign_keys=[orders_id])
@@ -99,7 +99,7 @@ class OrderCreate(Orders):
 
 class UserBase(BaseModel):
     email: str
-#    groep: str
+    groep: str
 
 
 class UserCreate(UserBase):

@@ -68,9 +68,9 @@ def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(), db:
 
 @app.post("/users/create", response_model=schemas.User)
 def create_user (user: schemas.UserCreate, db: Session = Depends(get_db)):
-    db_user = crud.create_user(db, email=user.email, password=user.password)
+    db_user = crud.create_user(db, email=user.email, password=user.password, groep=user.groep)
 #    if db_user 
-#        raise HTTPException(status_code=400, detail="Email already registered")
+#    raise HTTPException(status_code=400, detail="Email already registered")
     return db_user
 
 
@@ -168,8 +168,12 @@ def read_user_orders(user_id: int, db: Session = Depends(get_db)):
 
 # hieronder een get endpoint om een order op te vragen op basis van datum.
 
-@app.get("/order/date/{date}")
+@app.get("/orders/date/{date}")
 def get_order_by_date(date: str, db: Session = Depends(get_db)):
     return crud.get_order_by_date(db, date)
 
+
+@app.get("/orders/date")
+def get_order_date(date: str, db: Session = Depends(get_db)):
+    return crud.get_order_date(db, date)
 

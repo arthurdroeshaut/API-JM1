@@ -12,9 +12,9 @@ def get_user(db: Session, user_id: int):
     return db.query(models.User).filter(models.User.id == user_id).first()
 
 
-def create_user(db: Session, email, password: schemas.UserCreate):
+def create_user(db: Session, email, password, groep: schemas.UserCreate):
     password = auth.get_password_hash(password)
-    db_user = models.User(email=email, password=password)
+    db_user = models.User(email=email, password=password, groep=groep)
     db.add(db_user)
     db.commit()
     db.refresh(db_user)
@@ -173,6 +173,9 @@ def get_user_orders(db: Session, user_id: int):
 def get_order(db: Session, id: int):
     return db.query(models.Orders).filter(models.Orders.id == id).first()
 
+
+def get_order_date(db: Session, date: str):
+    return db.query(models.Orders).filter(models.Orders.date == date).first()
 
 def create_orders(db: Session, orders: schemas.OrdersCreate):
     now=datetime.now()
