@@ -19,6 +19,7 @@ class UserUpdate(UserBase):
 
 class User(UserBase):
     id: int
+    order_id : int
 
     class Config:
         orm_mode = True
@@ -40,6 +41,7 @@ class CoffeeUpdate(CoffeeBase):
 
 class Coffee(CoffeeBase):
     id: int
+    order_id : int
 
     class Config:
         orm_mode = True
@@ -59,7 +61,7 @@ class TeaUpdate(TeaBase):
 
 class Tea(TeaBase):
     id: int
-    user_id: int
+    order_id : int
 
     class Config:
         orm_mode = True
@@ -83,7 +85,7 @@ class CoffeeMachineUpdate(CoffeeMachineBase):
 
 class CoffeeMachine(CoffeeMachineBase):
     id: int
-    tea_id: int
+    order_id : int
 
     class Config:
         orm_mode = True
@@ -103,6 +105,7 @@ class CoffeeBeansUpdate(CoffeeBeansBase):
 
 class CoffeeBeans(CoffeeBeansBase):
     id: int
+    order_id : int
 
     class Config:
         orm_mode = True
@@ -117,10 +120,13 @@ class OrdersCreate(Orders):
     pass
 
 
-class Orders(Orders):
+class Order(Orders):
     id: int
     user_id: int
-    date : str
+    CoffeeBeans_id: int
+    CoffeeMachine_id: int
+    Coffee_id: int
+    Tea_id: int
     
 
     class Config:
