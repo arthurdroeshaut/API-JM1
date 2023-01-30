@@ -67,11 +67,13 @@ def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(), db:
 
 
 @app.post("/users/create", response_model=schemas.User)
-def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
-    db_user = crud.create_user(db=db, email=user.email, groep=user.groep, password=user.password)
-    if db_user:
-        raise HTTPException(status_code=400, detail="Email already registered")
-    return crud.create_user(db=db, user=user)
+def create_user (user: schemas.UserCreate, db: Session = Depends(get_db)):
+    db_user = crud.create_user(db, email=user.email, password=user.password)
+#    if db_user 
+#        raise HTTPException(status_code=400, detail="Email already registered")
+    return db_user
+
+
 
 
 @app.get("/users/", response_model=list[schemas.User])

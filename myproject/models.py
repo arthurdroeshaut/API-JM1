@@ -52,9 +52,11 @@ class Orders(Base):
     coffee_beans_id = Column(Integer, ForeignKey('coffee_beans.id'))
     tea_id = Column(Integer, ForeignKey('tea.id'))
     date = Column(String)
-    quantity = Column(Integer)
-    price = Column(Float)
-
+    Type_drank = Column(String)
+    type_bonen = Column(String)
+    soort_koffie = Column(String)
+    soort_thee = Column(String)
+    
     user = relationship("User", foreign_keys=[user_id])
     coffee = relationship("Coffee", foreign_keys=[coffee_id])
     coffee_beans = relationship("CoffeeBeans", foreign_keys=[coffee_beans_id])
@@ -67,9 +69,9 @@ class User(Base):
 
     id = Column(Integer, primary_key=True)
     email = Column(String)
-    hashed_password = Column(String)
+    password = Column(String)
     is_active = Column(Boolean, default=True)
-    groep = Column(String)
+#    groep = Column(String)
     orders_id = Column(Integer, ForeignKey('orders.id'))
     
     orders = relationship("Orders", foreign_keys=[orders_id])
@@ -97,7 +99,7 @@ class OrderCreate(Orders):
 
 class UserBase(BaseModel):
     email: str
-    groep: str
+#    groep: str
 
 
 class UserCreate(UserBase):

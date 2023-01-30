@@ -7,7 +7,7 @@ from datetime import datetime
 
 class UserBase(BaseModel):
     email: str
-    groep: str
+#    groep: str
 
 class UserCreate(UserBase):
     password: str
@@ -115,8 +115,10 @@ class CoffeeBeans(CoffeeBeansBase):
 
 
 class Orders(BaseModel):
-    quantity: int
-    price: float
+    Type_drank: str
+    soort_koffie: str
+    soort_thee: str
+    type_bonen: str
     
     
 class OrdersCreate(Orders):

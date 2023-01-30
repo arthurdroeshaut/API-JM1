@@ -12,9 +12,9 @@ def get_user(db: Session, user_id: int):
     return db.query(models.User).filter(models.User.id == user_id).first()
 
 
-def create_user(db: Session, email: str, groep: str, password: str):
-    hashed_password = auth.get_password_hash(password)
-    db_user = models.User(email=email, hashed_password=hashed_password, groep=groep)
+def create_user(db: Session, email, password: schemas.UserCreate):
+    password = auth.get_password_hash(password)
+    db_user = models.User(email=email, password=password)
     db.add(db_user)
     db.commit()
     db.refresh(db_user)
