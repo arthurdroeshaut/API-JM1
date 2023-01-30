@@ -224,9 +224,6 @@ def delete_order(db: Session, id: int):
     db.commit()
     
 
-def get_data_by_day(db: Session, date: str):
-    return db.query(models.Orders).filter(models.Orders.date == date).all()
-
 
 def get_orders(db: Session, skip: int = 0, limit: int = 100):
     return db.query(models.Orders).offset(skip).limit(limit).all()
@@ -250,3 +247,9 @@ def create_tea(db: Session, tea: schemas.TeaCreate):
     db.commit()
     db.refresh(tea_db)
     return tea_db
+
+
+def  get_orderdates(db: Session, skip: int = 0, limit: int = 100):
+    return db.query(models.Orders.date).offset(skip).limit(limit).all()
+    
+

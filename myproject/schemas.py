@@ -116,9 +116,9 @@ class CoffeeBeans(CoffeeBeansBase):
 
 class Orders(BaseModel):
     Type_drank: str
-    soort_koffie: str
-    soort_thee: str
-    type_bonen: str
+    soort_koffie: str | None = None
+    soort_thee: str | None = None
+    type_bonen: str | None = None
 
     
     

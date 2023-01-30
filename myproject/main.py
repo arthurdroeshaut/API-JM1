@@ -95,6 +95,11 @@ def create_coffee_machine(coffee_machine: schemas.CoffeeMachineCreate, db: Sessi
 def create_orders(orders: schemas.OrdersCreate, db: Session = Depends(get_db)):
     return crud.create_orders(db=db, orders=orders)
 
+
+@app.get("/getorders/")
+def get_orders(db: Session = Depends(get_db)):
+    return crud.get_orders(db=db)
+
 @app.post("/coffee/")
 def create_coffee(coffee: schemas.CoffeeCreate, db: Session = Depends(get_db)):
     return crud.create_coffee(db=db, coffee=coffee)
@@ -186,3 +191,7 @@ def get_order_date(date: str, db: Session = Depends(get_db)):
 def get_orders(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     return crud.get_orders(db, skip=skip, limit=limit)
 
+
+@app.get("/orderdates/")
+def get_orderdates(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
+    return crud.get_orderdates(db, skip=skip, limit=limit)
