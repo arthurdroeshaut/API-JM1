@@ -12,6 +12,10 @@ from schemas import UserUpdate, UserCreate, User, CoffeeMachineCreate, CoffeeMac
 from database import SessionLocal, engine
 import os
 import sqlite3
+import datetime
+
+
+now = datetime.datetime.now()
 
 if not os.path.exists('.\sqlitedb'):
     os.makedirs('.\sqlitedb')
@@ -100,9 +104,14 @@ def create_orders(orders: schemas.OrdersCreate, db: Session = Depends(get_db)):
 def get_orders(db: Session = Depends(get_db)):
     return crud.get_orders(db=db)
 
-@app.post("/coffee/")
+@app.post("/koffie/")
 def create_coffee(coffee: schemas.CoffeeCreate, db: Session = Depends(get_db)):
     return crud.create_coffee(db=db, coffee=coffee)
+
+
+@app.get("/getkoffie/{koffiebonen}/{koffiesoort}")
+
+
 
 
 @app.post("/coffee-beans/")
@@ -179,7 +188,7 @@ def read_user_orders(user_id: int, db: Session = Depends(get_db)):
 
 @app.get("/orders/date/{date}")
 def get_order_by_date(date: str, db: Session = Depends(get_db)):
-    return crud.get_order_by_date(db, date)
+    return crud.get_order_by_date(db=db, date=date)
 
 
 @app.get("/orders/date")
@@ -194,4 +203,31 @@ def get_orders(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
 
 @app.get("/orderdates/")
 def get_orderdates(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
-    return crud.get_orderdates(db, skip=skip, limit=limit)
+    return crud.get_orderdates(db=db, skip=skip, limit=limit)
+
+@app.get("/orders/daily/")
+def get_daily_orders():
+    now = datetime.datetime.now()
+    orders = orders.select().where(orders.created_at.day == now.day)
+    return orders.all()
+   
+
+
+@app.get("/orders/weekly/")
+def get_weekly_orders():
+    now = datetime.datetime.now()
+    orders = Orders.select().where(Orders.created_at.week == now.week)
+    return orders.all()
+
+@app.get("/orders/monthly/")
+def get_monthly_orders():
+    now = datetime.now()
+    orders = Orders.select().where(Orders.created_at.month == now.month)
+    return orders.all()
+
+@app.get("/orders/yearly/")
+def get_yearly_orders():
+    now = datetime.now()
+    orders = Orders.select().where(Orders.created_at.year == now.year)
+    return orders.all()
+

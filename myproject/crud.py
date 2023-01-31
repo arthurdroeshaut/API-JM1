@@ -1,10 +1,13 @@
 from sqlalchemy.orm import Session
+import sqlite3
 import models
 import schemas 
 import auth
 from datetime import datetime
+from typing import List
+from schemas import Orders
 
-
+now = datetime.now()
 # de create user voor hashing alsook om de users op te vragen via email.
 
 
@@ -153,8 +156,6 @@ def delete_tea(db: Session, id: int):
 # alle cruds met orders
 
 
-def get_orders(db: Session, skip: int = 0, limit: int = 100):
-    return db.query(models.Orders).offset(skip).limit(limit).all()
 
 def get_order_by_date(db: Session, date: str):
     return db.query(models.Orders).filter(models.Orders.date == date).all()
@@ -162,9 +163,6 @@ def get_order_by_date(db: Session, date: str):
 def get_order_by_id(db: Session, id: int):
     return db.query(models.Orders).filter(models.Orders.id == id).all()
 
-
-def get_orders_by_date_by_user_id(db: Session, user_id: int): 
-    return db.query(models.Orders).filter(models.Orders.id == user_id).order_by(models.Orders.date).all()
 
 def get_user_orders(db: Session, user_id: int):
     return db.query(models.Orders).filter(models.Orders.id == user_id).order_by(models.Orders.date.asc()).all()
@@ -225,14 +223,6 @@ def delete_order(db: Session, id: int):
     
 
 
-def get_orders(db: Session, skip: int = 0, limit: int = 100):
-    return db.query(models.Orders).offset(skip).limit(limit).all()
-
-
-def get_orders_koffie(db: Session, skip: int = 0, limit: int = 100):
-    return db.query(models.Orders.coffee).offset(skip).limit(limit).all()
-
-
 def create_drank(db: Session, drankjes: schemas.DrankjesCreate):
     drankjes_db = models.Drankjes(type_drank=drankjes.type_drank)
     db.add(drankjes_db)
@@ -251,5 +241,55 @@ def create_tea(db: Session, tea: schemas.TeaCreate):
 
 def  get_orderdates(db: Session, skip: int = 0, limit: int = 100):
     return db.query(models.Orders.date).offset(skip).limit(limit).all()
+
+
+def get_orders(start_date: datetime, end_date: datetime) -> List[Orders]:
+    orders = Orders.query.filter(Orders.created_at >= start_date, Orders.created_at <= end_date).all()
+    return orders
     
+    # sqlitedata.db is de database waarin de data wordt opgeslagen
+    
+    
+def dict_factory(cursor, row):
+    d = {}
+    for idx, col in enumerate(cursor.description):
+        d[col[0]] = row[idx]
+    return d
+    
+
+def get_daily_orders(date: datetime.date):
+    conn = sqlite3.connect('sqlitedata.db')
+    conn.row_factory = dict_factory
+    cur = conn.cursor()
+    daily_orders= cur.execute("SELECT * FROM orders WHERE date = ?", (date,)).fetchall()
+    conn.close()
+    return daily_orders
+    
+    
+    
+    
+    
+def get_daily_orders(db: Session, date: datetime.date):
+    return db.query(Orders).filter(Orders.date == date).all()
+
+
+def get_weekly_orders(db: Session, date: datetime.date):
+    first_day_of_week = date - datetime.timedelta(date.weekday())
+    last_day_of_week = first_day_of_week + datetime.timedelta(6)
+    return db.query(Orders).filter(Orders.date >= first_day_of_week, Orders.date <= last_day_of_week).all()
+
+
+def get_monthly_orders(db: Session, date: datetime.date):
+    first_day_of_month = datetime.date(date.year, date.month, 1)
+    last_day_of_month = datetime.date(date.year, date.month, 1, 12)
+    return db.query(Orders).filter(Orders.order_date >= first_day_of_month, Orders.order_date <= last_day_of_month).all()
+
+
+def get_yearly_orders(db: Session, date: datetime.date):
+    first_day_of_year = datetime.date(date.year, 1, 1)
+    last_day_of_year = datetime.date(date.year, 12, 31)
+    return db.query(Orders).filter(Orders.order_date >= first_day_of_year, Orders.order_date <= last_day_of_year).all()
+
+
+
 
